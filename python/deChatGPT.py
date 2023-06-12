@@ -16,7 +16,7 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
 # Define constants
-SCREEN_WIDTH = 300
+SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 BLOCK_SIZE = 20
 GRID_WIDTH = 10
@@ -61,7 +61,6 @@ def collides():
     for y in range(len(current_shape)):
         for x in range(len(current_shape[y])):
             if current_shape[y][x]:
-                print(current_y + y)
                 if (
                     current_x + x < 0
                     or current_x + x >= GRID_WIDTH
