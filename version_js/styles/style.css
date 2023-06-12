@@ -1,0 +1,60 @@
+:root {
+  /*
+  --background-color: #181b48;
+  --content-background-color: #181b48;
+  --content-border: #7786c1;
+  --text-color: #7786c1;
+  */
+  --background-color: black;
+  --content-background-color: black;
+  --content-border: white;
+  --text-color: white;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.menu-center {
+  text-align: center;
+}
+
+.menu-center h1 {
+  font-size: 64px;
+  text-decoration: none;
+}
+
+.button-menu {
+  width: 350px;
+  height: 100px;
+  font-size: 40px;
+  color: var(--text-color);
+  background-color: var(--content-background-color);
+  border: 5px solid var(--content-border);
+}
+
+.menu-center > :not(:first-child) {
+  margin-top: 16px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+canvas {
+  position: absolute;
+  padding: 0;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  border: 5px solid var(--content-border);
+}
