@@ -1,3 +1,7 @@
+@font-face {
+  font-family: Inter;
+  src: url(../font/Inter-Regular.ttf);
+}
 :root {
   /*
   --background-color: #181b48;
@@ -14,15 +18,17 @@
 body {
   background-color: var(--background-color);
   color: var(--text-color);
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Inter;
 }
 
 .menu-center {
   text-align: center;
+  margin: auto;
+  width: 50%;
 }
 
-.menu-center h1 {
-  font-size: 64px;
+h1 {
+  font-size: 40px;
   text-decoration: none;
 }
 
@@ -32,7 +38,7 @@ body {
 }
 
 .button-menu {
-  /*max-width: 350px;*/
+  font-family: Inter;
   width: 350px;
   height: 100px;
   font-size: 40px;
@@ -68,34 +74,19 @@ canvas {
 
 /* Game Mode */
 
-.button-classic {
-  width: 350px;
-  height: 100px;
-  font-size: 40px;
-  color: var(--text-color);
-  background-color: var(--content-background-color);
-  border: 5px solid #CEB222;
+.classic {
+  border: 5px solid #ceb222;
 }
 
-.button-metabloc {
-  width: 350px;
-  height: 100px;
-  font-size: 40px;
-  color: var(--text-color);
-  background-color: var(--content-background-color);
-  border: 5px solid #9518E2;
+.metabloc {
+  border: 5px solid #9518e2;
 }
 
-.button-rush {
-  width: 350px;
-  height: 100px;
-  font-size: 40px;
-  color: var(--text-color);
-  background-color: var(--content-background-color);
-  border: 5px solid #E91E1E;
+.rush {
+  border: 5px solid #e91e1e;
 }
 
-.button-play {
+.play {
   width: 200px;
   height: 80px;
   font-size: 40px;
@@ -111,25 +102,29 @@ canvas {
   left: 275px;
   top: 300px;
 
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 15px;
 }
 
 .parameter {
-  max-width: 600px;
+  text-align: left;
+  width: 600px;
   height: 80px;
-  left: 100px;
-  top: 140px;
-  margin: auto;
-  font-style: normal;
-  font-size: 32px;
-  line-height: 39px;
-  display: flex;
-  align-items: center;
-  text-align: start;
-  text-decoration: #FFFFFF;
-  padding-left: 40px;
+  color: var(--text-color);
+  background-color: var(--content-background-color);
+  border: 5px solid var(--content-border);
+}
 
-  background: #000000;
-  border: 5px solid #FFFFFF;
+.parameter h2 {
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.title-mode {
+  text-align: center;
+  color: #ceb222;
+  width: 40%;
+}
+
+.grid {
 }
