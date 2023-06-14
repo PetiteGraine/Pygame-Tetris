@@ -1,7 +1,7 @@
 const canvas = document.getElementById("tetris");
 const ctx = canvas.getContext('2d');
 
-const scale = 20;
+const scale = canvas.width / 10;
 
 ctx.scale(scale, scale);
 
