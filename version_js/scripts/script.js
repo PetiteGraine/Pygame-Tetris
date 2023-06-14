@@ -121,6 +121,9 @@ function mergeArena(matrix, x, y) {
     }
 }
 
+let current_score = 0;
+const score = document.getElementById("score");
+
 function clearBlocks() {
     for (let i = 1; i < arena.length - 2; i++) {
         let clear = 1;
@@ -137,6 +140,8 @@ function clearBlocks() {
 
             arena.splice(i, 1);
             arena.splice(1, 0, r);
+            current_score++;
+            score.textContent = current_score;
         }
     }
 }

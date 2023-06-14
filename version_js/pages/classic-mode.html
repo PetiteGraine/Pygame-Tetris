@@ -12,8 +12,39 @@
     <div class="title-mode">
         <h1>Classic</h1>
     </div>
-    <div class="grid"></div>
-    <canvas id="tetris" width="275" height="550"></canvas>
+
+    <div class="grid-container">
+        <!-- Génération des éléments de la grille -->
+        <script>
+            for (let i = 1; i <= 200; i++) {
+                document.write('<div class="item' + i + '"></div>');
+            }
+        </script>
+    </div>
+
+    <div class="next-block">
+        <h6>Next</h6>
+        <div class="next-block-content"></div>
+    </div>
+
+    <div class="infos-level-container">
+        <div class="info-level">
+            <h6>Level</h6>
+            <div class="info-level-content"></div>
+        </div>
+        <div class="info-level">
+            <h6>Time</h6>
+            <div class="info-level-content"></div>
+        </div>
+        <div class="info-level">
+            <h6>Score</h6>
+            <div class="info-level-content">
+                <p id="score">0</p>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="tetris" width="280" height="560"></canvas>
     <script src="../scripts/script.js" charset="utf-8"></script>
 </body>
 
