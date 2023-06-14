@@ -1,4 +1,4 @@
-# Pygame-Tetris
+# Tetris-js
 
 ## Authors :
 
@@ -8,8 +8,6 @@
 
 - Rémi R MATHIVANAN
 
-
-
 ## Description :
 
-A tetris game made in python and pygame.
+A tetris game made in with html/css/js.
