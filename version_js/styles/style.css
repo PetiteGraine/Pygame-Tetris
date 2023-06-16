@@ -186,3 +186,43 @@ h6 {
 .info-level-content > p {
   text-align: center;
 }
+
+.arrow_top {
+  position:absolute;
+  width: 30px;
+  height: 5px;
+  top: 8%;
+  left: 5%;
+  background: #ffffff;
+  border-radius: 15px;
+  transform: rotate(-30deg)
+}
+.arrow_middle {
+  position:absolute;
+  width: 100px;
+  height: 5px;
+  top: 9%;
+  left: 5%;
+  background: #ffffff;
+  border-radius: 15px;
+
+}
+.arrow_bottom {
+  position:absolute;
+  width: 30px;
+  height: 5px;
+  top: 10%;
+  left: 5%;
+  background: #ffffff;
+  border-radius: 15px;
+  transform: rotate(30deg)
+}
+.classic:hover {
+  background-color: #ceb222;
+}
+.metabloc:hover {
+  background-color: #9518e2;
+}
+.rush:hover {
+  background-color: #e91e1e;
+}
