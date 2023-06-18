@@ -100,14 +100,17 @@ canvas {
   border-radius: 15px;
 }
 
-.username {
-  width: 250px;
+.input-text {
+  width: 210px;
   height: 50px;
-  left: 275px;
-  top: 300px;
-
-  background: #ffffff;
   border-radius: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: none;
+}
+
+.input-text:focus {
+  outline: none;
 }
 
 .parameter {
@@ -188,34 +191,33 @@ h6 {
 }
 
 .arrow_top {
-  position:absolute;
+  position: absolute;
   width: 30px;
   height: 5px;
   top: 8%;
   left: 5%;
   background: #ffffff;
   border-radius: 15px;
-  transform: rotate(-30deg)
+  transform: rotate(-30deg);
 }
 .arrow_middle {
-  position:absolute;
+  position: absolute;
   width: 100px;
   height: 5px;
   top: 9%;
   left: 5%;
   background: #ffffff;
   border-radius: 15px;
-
 }
 .arrow_bottom {
-  position:absolute;
+  position: absolute;
   width: 30px;
   height: 5px;
   top: 10%;
   left: 5%;
   background: #ffffff;
   border-radius: 15px;
-  transform: rotate(30deg)
+  transform: rotate(30deg);
 }
 .classic:hover {
   background-color: #ceb222;
@@ -225,4 +227,15 @@ h6 {
 }
 .rush:hover {
   background-color: #e91e1e;
+}
+
+.button-play {
+  font-family: Inter;
+  width: 200px;
+  height: 80px;
+  font-size: 40px;
+  color: var(--text-color);
+  background-color: var(--content-background-color);
+  border: 5px solid var(--content-border);
+  border-radius: 15px;
 }
