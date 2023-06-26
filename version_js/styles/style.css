@@ -229,7 +229,7 @@ h6 {
   background-color: #e91e1e;
 }
 
-.button-play {
+.button-login-signup {
   font-family: Inter;
   width: 200px;
   height: 80px;
@@ -238,4 +238,9 @@ h6 {
   background-color: var(--content-background-color);
   border: 5px solid var(--content-border);
   border-radius: 15px;
+}
+
+.account-link {
+  text-decoration: underline;
+  color: var(--text-color);
 }
