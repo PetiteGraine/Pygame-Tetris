@@ -1,9 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Test -->
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/style.css">
-    <title>Rush</title>
-</head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/style.css" />
+    <title>Tetris - Classic</title>
+</head>-
+<header>
+    <a href="select-mode.html">
+        <div class="arrow_top"></div>
+        <div class="arrow_middle"></div>
+        <div class="arrow_bottom"></div>
+    </a>
+</header>
+
+<body>
+    <div class="title-mode">
+        <h1>Rush</h1>
+    </div>
+
+    <div class="grid-container">
+        <!-- Génération des éléments de la grille -->
+        <script>
+            for (let i = 1; i <= 200; i++) {
+                document.write('<div class="item' + i + '"></div>');
+            }
+        </script>
+    </div>
+
+    <div class="next-block">
+        <h6>Next</h6>
+        <div class="next-block-content"></div>
+    </div>
+
+    <div class="infos-level-container">
+        <div class="info-level">
+            <h6>Level</h6>
+            <div class="info-level-content"></div>
+        </div>
+        <div class="info-level">
+            <h6>Time</h6>
+            <div class="info-level-content">
+                <p id="time">0</p>
+            </div>
+        </div>
+        <div class="info-level">
+            <h6>Score</h6>
+            <div class="info-level-content">
+                <p id="score">0</p>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="tetris" width="280" height="560"></canvas>
+    <script src="../scripts/rush-mode.js" charset="utf-8"></script>
+    <script>
+        document
+            .querySelector(":root")
+            .style.setProperty("--current-mode-color", "var(--rush-color)");
+    </script>
+</body>
+
+</html>
