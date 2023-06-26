@@ -305,3 +305,33 @@ document.addEventListener("keydown", (event) => {
 
 initArena();
 update();
+
+// Sélectionner l'élément DOM du timer
+const timerElement = document.getElementById('time');
+
+// Définir la durée initiale du timer en secondes
+let timerDuration = 0;
+
+// Définir la fonction qui met à jour le timer
+function updateTimer() {
+    if (isGameOver) {
+        return;
+    }
+
+    // Calculer les minutes et les secondes restantes
+    const minutes = Math.floor(timerDuration / 60);
+    const seconds = timerDuration % 60;
+
+    // Afficher le timer dans l'élément DOM
+    timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+    // Incrémente le temps
+    timerDuration++;
+
+}
+
+// Appeler la fonction updateTimer une fois pour afficher le temps initial
+updateTimer();
+
+// Mettre à jour le timer toutes les secondes
+const timerInterval = setInterval(updateTimer, 1000);
