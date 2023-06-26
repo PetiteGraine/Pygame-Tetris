@@ -1,5 +1,5 @@
 const canvas = document.getElementById("tetris");
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext("2d");
 
 const scale = canvas.width / 10;
 
@@ -8,73 +8,96 @@ ctx.scale(scale, scale);
 const tWidth = canvas.width / scale;
 const tHeight = canvas.height / scale;
 
+class Tetromino {
+    constructor(matrix, color) {
+        this.matrix = matrix;
+        this.color = color;
+    }
+}
+
 const pieces = [
-    [
-        [1, 1],
-        [1, 1]
-    ],
-    [
-        [0, 2, 0, 0],
-        [0, 2, 0, 0],
-        [0, 2, 0, 0],
-        [0, 2, 0, 0]
-    ],
-    [
-        [0, 0, 0],
-        [3, 3, 0],
-        [0, 3, 3]
-    ],
-    [
-        [0, 0, 0],
-        [0, 4, 4],
-        [4, 4, 0]
-    ],
-    [
-        [5, 0, 0],
-        [5, 0, 0],
-        [5, 5, 0]
-    ],
-    [
-        [0, 0, 6],
-        [0, 0, 6],
-        [0, 6, 6]
-    ],
-    [
-        [0, 0, 0],
-        [7, 7, 7],
-        [0, 7, 0]
-    ]
-];
-const colors = [
-    null,
-    '#9518E2',
-    '#F0692F',
-    '#F5D949',
-    '#26AA10',
-    '#E91E1E',
-    '#D70FC3',
-    '#1EBB95'
+    new Tetromino(
+        [
+            [1, 1],
+            [1, 1],
+        ],
+        "#9518E2"
+    ),
+    new Tetromino(
+        [
+            [0, 2, 0, 0],
+            [0, 2, 0, 0],
+            [0, 2, 0, 0],
+            [0, 2, 0, 0],
+        ],
+        "#F0692F"
+    ),
+    new Tetromino(
+        [
+            [0, 0, 0],
+            [3, 3, 0],
+            [0, 3, 3],
+        ],
+        "#F5D949"
+    ),
+    new Tetromino(
+        [
+            [0, 0, 0],
+            [0, 4, 4],
+            [4, 4, 0],
+        ],
+        "#26AA10"
+    ),
+    new Tetromino(
+        [
+            [5, 0, 0],
+            [5, 0, 0],
+            [5, 5, 0],
+        ],
+        "#E91E1E"
+    ),
+    new Tetromino(
+        [
+            [0, 0, 6],
+            [0, 0, 6],
+            [0, 6, 6],
+        ],
+        "#D70FC3"
+    ),
+    new Tetromino(
+        [
+            [0, 0, 0],
+            [7, 7, 7],
+            [0, 7, 0],
+        ],
+        "#1EBB95"
+    ),
 ];
 
 let arena = [];
 
 let rand;
 
-const player = {
-    pos: { x: 4, y: 0 },
-    matrix: null,
-    color: null
+class Player {
+    constructor() {
+        this.pos = { x: 4, y: 0 };
+        this.tetromino = null;
+        this.score = 0;
+    }
+
+    getRandomTetromino() {
+        rand = Math.floor(Math.random() * pieces.length);
+        this.tetromino = pieces[rand];
+    }
 }
 
-rand = Math.floor(Math.random() * pieces.length);
-player.matrix = pieces[rand];
-player.color = colors[rand + 1];
+const player = new Player();
+player.getRandomTetromino();
 
 function drawMatrix(matrix, x, y) {
     for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[i].length; j++) {
-            if (matrix[i][j])
-                ctx.fillRect(x + j, y + i, 1, 1);
+            if (matrix[i][j]) ctx.fillRect(x + j, y + i, 1, 1);
         }
     }
 }
@@ -82,8 +105,7 @@ function drawMatrix(matrix, x, y) {
 function rotateMatrix(matrix, dir) {
     let newMatrix = [];
 
-    for (let i in matrix)
-        newMatrix.push([]);
+    for (let i in matrix) newMatrix.push([]);
 
     if (dir === 1) {
         for (let i = 0; i < matrix.length; i++) {
@@ -103,34 +125,36 @@ function rotateMatrix(matrix, dir) {
 }
 
 function collides(player, arena) {
-    for (let i = 0; i < player.matrix.length; i++) {
-        for (let j = 0; j < player.matrix[i].length; j++) {
-            if (player.matrix[i][j] && arena[player.pos.y + i + 1][player.pos.x + j + 1])
-                return 1;
+    for (let i = 0; i < player.tetromino.matrix.length; i++) {
+        for (let j = 0; j < player.tetromino.matrix[i].length; j++) {
+            if (
+                player.tetromino.matrix[i][j] &&
+                arena[player.pos.y + i + 1][player.pos.x + j + 1]
+            )
+                return true;
         }
     }
 
-    return 0;
+    return false;
 }
 
 function mergeArena(matrix, x, y) {
     for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[i].length; j++) {
-            arena[y + i + 1][x + j + 1] = arena[y + i + 1][x + j + 1] || matrix[i][j];
+            arena[y + i + 1][x + j + 1] =
+                arena[y + i + 1][x + j + 1] || matrix[i][j];
         }
     }
 }
 
-let current_score = 0;
 const score = document.getElementById("score");
 
 function clearBlocks() {
     for (let i = 1; i < arena.length - 2; i++) {
-        let clear = 1;
+        let clear = true;
 
         for (let j = 1; j < arena[i].length - 1; j++) {
-            if (!arena[i][j])
-                clear = 0;
+            if (!arena[i][j]) clear = false;
         }
 
         if (clear) {
@@ -140,8 +164,8 @@ function clearBlocks() {
 
             arena.splice(i, 1);
             arena.splice(1, 0, r);
-            current_score++;
-            score.textContent = current_score;
+            player.score++;
+            score.textContent = player.score;
         }
     }
 }
@@ -150,7 +174,7 @@ function drawArena() {
     for (let i = 1; i < arena.length - 2; i++) {
         for (let j = 1; j < arena[i].length - 1; j++) {
             if (arena[i][j]) {
-                ctx.fillStyle = colors[arena[i][j]];
+                ctx.fillStyle = pieces[arena[i][j] - 1].color;
                 ctx.fillRect(j - 1, i - 1, 1, 1);
             }
         }
@@ -176,9 +200,7 @@ function initArena() {
 }
 
 function gameOver() {
-    for (let j = 1; j < arena[1].length - 1; j++)
-        if (arena[1][j])
-            return initArena();
+    for (let j = 1; j < arena[1].length - 1; j++) if (arena[1][j]) return initArena();
 
     return;
 }
@@ -188,7 +210,6 @@ let lastTime = 0;
 let count = 0;
 
 function update(time = 0) {
-
     const dt = time - lastTime;
     lastTime = time;
     count += dt;
@@ -199,16 +220,14 @@ function update(time = 0) {
     }
 
     if (collides(player, arena)) {
-        mergeArena(player.matrix, player.pos.x, player.pos.y - 1);
+        mergeArena(player.tetromino.matrix, player.pos.x, player.pos.y - 1);
         clearBlocks();
         gameOver();
 
         player.pos.y = 0;
         player.pos.x = 4;
 
-        rand = Math.floor(Math.random() * pieces.length);
-        player.matrix = pieces[rand];
-        player.color = colors[rand + 1];
+        player.getRandomTetromino();
 
         interval = 1000;
     }
@@ -217,33 +236,29 @@ function update(time = 0) {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     drawArena();
-    ctx.fillStyle = player.color;
-    drawMatrix(player.matrix, player.pos.x, player.pos.y);
+    ctx.fillStyle = player.tetromino.color;
+    drawMatrix(player.tetromino.matrix, player.pos.x, player.pos.y);
 
     requestAnimationFrame(update);
 }
 
-document.addEventListener("keydown", event => {
-
+document.addEventListener("keydown", (event) => {
     if (event.keyCode === 37 && interval - 1) {
         player.pos.x--;
-        if (collides(player, arena))
-            player.pos.x++;
+        if (collides(player, arena)) player.pos.x++;
     } else if (event.keyCode === 39 && interval - 1) {
         player.pos.x++;
-        if (collides(player, arena))
-            player.pos.x--;
+        if (collides(player, arena)) player.pos.x--;
     } else if (event.keyCode === 40) {
         player.pos.y++;
         count = 0;
     } else if (event.keyCode === 38) {
-        player.matrix = rotateMatrix(player.matrix, 1);
+        player.tetromino.matrix = rotateMatrix(player.tetromino.matrix, 1);
         if (collides(player, arena))
-            player.matrix = rotateMatrix(player.matrix, -1);
+            player.tetromino.matrix = rotateMatrix(player.tetromino.matrix, -1);
     } else if (event.keyCode === 32) {
         interval = 1;
     }
-
 });
 
 initArena();
