@@ -1,3 +1,14 @@
+const speedOption = document.getElementById('speed-option');
+const triangleLeft = document.querySelector('.triangle-left');
+const triangleRight = document.querySelector('.triangle-right');
+let speed = 0;
+
+// Add event listener for the right triangle
+triangleRight.addEventListener('click', incrementSpeed);
+
+// Add event listener for the left triangle
+triangleLeft.addEventListener('click', decrementSpeed);
+
 const canvas = document.getElementById("tetris");
 const ctx = canvas.getContext("2d");
 
@@ -81,6 +92,7 @@ class Player {
         this.pos = { x: 4, y: 0 };
         this.tetromino = null;
         this.score = 0;
+        this.speed = 0;
     }
 
     getRandomTetromino() {
@@ -91,6 +103,29 @@ class Player {
 
 const player = new Player();
 player.getRandomTetromino();
+
+// Update the speed display
+function updateSpeed() {
+    speedOption.textContent = speed;
+}
+
+// Increment the speed by one
+function incrementSpeed() {
+    if (speed < 10) {
+        speed++;
+        player.speed++;
+        updateSpeed();
+    }
+}
+
+// Decrement the speed by one
+function decrementSpeed() {
+    if (speed > 0) {
+        speed--;
+        player.speed--;
+        updateSpeed();
+    }
+}
 
 function drawMatrix(matrix, x, y) {
     for (let i = 0; i < matrix.length; i++) {
@@ -198,7 +233,7 @@ function initArena() {
 }
 
 function gameOver() {
-    for (let j = 1; j < arena[1].length - 1; j++) if (arena[1][j]) return initArena();
+    for (let j = 1; j < arena[1].length - 1; j++) if (arena[1][j]) isGameOver = true;
 
     return;
 }
@@ -206,8 +241,10 @@ function gameOver() {
 let interval = 1000;
 let lastTime = 0;
 let count = 0;
+let isGameOver = false;
 
 function update(time = 0) {
+    if (isGameOver) return;
     const dt = time - lastTime;
     lastTime = time;
     count += dt;
@@ -227,7 +264,12 @@ function update(time = 0) {
 
         player.getRandomTetromino();
 
-        interval = 1000;
+        if (player.speed < 10) {
+            interval = 1000 - (player.speed * 100);
+        }
+        else {
+            interval = 50;
+        }
     }
 
     ctx.fillStyle = "#000";
