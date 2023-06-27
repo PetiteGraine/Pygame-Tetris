@@ -1,11 +1,45 @@
 const speedOption = document.getElementById('speed-option');
+const themeModeButton = document.getElementById('theme-mode');
+const rotateButton = document.getElementById('rotate-option');
+const gameOverElement = document.getElementById('game-over');
 const restartButton = document.getElementById('restart');
 const triangleLeft = document.querySelector('.triangle-left');
 const triangleRight = document.querySelector('.triangle-right');
+var r = document.querySelector(':root');
+let rotateIsAllowed = true;
+let isDarkMode = true;
 // Sélectionner l'élément DOM du timer
 const timerElement = document.getElementById('time');
 let speed = 0;
 
+function changeRotate() {
+    if (rotateIsAllowed) {
+        rotateIsAllowed = false;
+        rotateButton.textContent = "Rotate: Off";
+    }
+    else { rotateIsAllowed = true; rotateButton.textContent = "Rotate: On"; }
+}
+
+function changeTheme() {
+    if (isDarkMode) {
+        r.style.setProperty('--background-color', 'white');
+        r.style.setProperty('--content-background-color', 'white');
+        r.style.setProperty('--content-border', 'black');
+        r.style.setProperty('--text-color', 'black');
+        themeModeButton.textContent = "Dark mode";
+        isDarkMode = false;
+    }
+    else {
+        r.style.setProperty('--background-color', 'black');
+        r.style.setProperty('--content-background-color', 'black');
+        r.style.setProperty('--content-border', 'white');
+        r.style.setProperty('--text-color', 'white');
+        themeModeButton.textContent = "Light mode";
+        isDarkMode = true;
+    }
+}
+rotateButton.addEventListener("click", changeRotate);
+themeModeButton.addEventListener("click", changeTheme);
 
 restartButton.addEventListener("click", restart);
 // Add event listener for the right triangle
@@ -13,6 +47,8 @@ triangleRight.addEventListener('click', incrementSpeed);
 
 // Add event listener for the left triangle
 triangleLeft.addEventListener('click', decrementSpeed);
+
+
 
 const canvas = document.getElementById("tetris");
 const ctx = canvas.getContext("2d");
@@ -143,6 +179,7 @@ function drawMatrix(matrix, x, y) {
 }
 
 function rotateMatrix(matrix, dir) {
+    if (!rotateIsAllowed) return matrix;
     let newMatrix = [];
 
     for (let i in matrix) newMatrix.push([]);
@@ -247,7 +284,7 @@ function initArena() {
 }
 
 function gameOver() {
-    for (let j = 1; j < arena[1].length - 1; j++) if (arena[1][j]) isGameOver = true;
+    for (let j = 1; j < arena[1].length - 1; j++) if (arena[1][j]) { isGameOver = true; gameOverElement.style.visibility = "visible"; }
     return;
 }
 
@@ -257,6 +294,7 @@ let count = 0;
 let isGameOver = false;
 
 function restart() {
+    gameOverElement.style.visibility = "hidden";
     initArena();
     update();
 }
