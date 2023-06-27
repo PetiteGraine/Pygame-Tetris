@@ -332,3 +332,11 @@ h6 {
   right: 15%;
   bottom: 15%;
 }
+
+#login-signup {
+  color: var(--text-color);
+  margin: 0;
+  margin-right: 100px;
+  padding: 20px;
+  text-decoration: underline;
+}
