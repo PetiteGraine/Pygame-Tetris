@@ -6,50 +6,21 @@ const gameOverElement = document.getElementById('game-over');
 const restartButton = document.getElementById('restart');
 const triangleLeft = document.querySelector('.triangle-left');
 const triangleRight = document.querySelector('.triangle-right');
-var r = document.querySelector(':root');
-let rotateIsAllowed = true;
-let isDarkMode = true;
-// Sélectionner l'élément DOM du timer
+const gridItems = document.querySelectorAll('.grid-next-container > div');
 const timerElement = document.getElementById('time');
+const score = document.getElementById("score");
+
+var r = document.querySelector(':root');
 let speed = 0;
 let speed_min = 0;
 let level = 1;
 let clear_before_next_level = 1;
+let timerDuration = 0;
 
-function changeRotate() {
-    if (rotateIsAllowed) {
-        rotateIsAllowed = false;
-        rotateButton.textContent = "Rotate: Off";
-    }
-    else { rotateIsAllowed = true; rotateButton.textContent = "Rotate: On"; }
-}
-
-function changeTheme() {
-    if (isDarkMode) {
-        r.style.setProperty('--background-color', 'white');
-        r.style.setProperty('--content-background-color', 'white');
-        r.style.setProperty('--content-border', 'black');
-        r.style.setProperty('--text-color', 'black');
-        themeModeButton.textContent = "Dark mode";
-        isDarkMode = false;
-    }
-    else {
-        r.style.setProperty('--background-color', 'black');
-        r.style.setProperty('--content-background-color', 'black');
-        r.style.setProperty('--content-border', 'white');
-        r.style.setProperty('--text-color', 'white');
-        themeModeButton.textContent = "Light mode";
-        isDarkMode = true;
-    }
-}
 rotateButton.addEventListener("click", changeRotate);
 themeModeButton.addEventListener("click", changeTheme);
-
 restartButton.addEventListener("click", restart);
-// Add event listener for the right triangle
 triangleRight.addEventListener('click', incrementSpeed);
-
-// Add event listener for the left triangle
 triangleLeft.addEventListener('click', decrementSpeed);
 
 
@@ -138,18 +109,83 @@ class Player {
     constructor() {
         this.pos = { x: 4, y: 0 };
         this.tetromino = null;
+        this.next_tetromino = null;
         this.score = 0;
         this.speed = 0;
+        this.isDarkMode = true;
+        this.rotateIsAllowed = true;
+    }
+
+    getRandomTetrominoFirstTime() {
+        rand = Math.floor(Math.random() * pieces.length);
+        this.tetromino = pieces[rand];
+        rand = Math.floor(Math.random() * pieces.length);
+        this.next_tetromino = pieces[rand];
     }
 
     getRandomTetromino() {
+        this.tetromino = this.next_tetromino;
         rand = Math.floor(Math.random() * pieces.length);
-        this.tetromino = pieces[rand];
+        this.next_tetromino = pieces[rand];
+        updateGridWithTetrimino()
+    }
+
+}
+
+let interval = 1000;
+let lastTime = 0;
+let count = 0;
+let isGameOver = false;
+const player = new Player();
+player.getRandomTetrominoFirstTime();
+initArena();
+update();
+updateTimer();
+
+// Mettre à jour le timer toutes les secondes
+const timerInterval = setInterval(updateTimer, 1000);
+
+function updateGridWithTetrimino() {
+    // Clear the grid by setting all grid items' background color to 'black'
+    for (let i = 0; i < gridItems.length; i++) {
+        gridItems[i].style.backgroundColor = 'rgba(0, 0, 0, 0)';
+    }
+
+    // Iterate over the grid items and update their color based on the shape
+    for (let i = 0; i < player.next_tetromino.matrix.length; i++) {
+        for (let y = 0; y < player.next_tetromino.matrix[i].length; y++) {
+            const gridIndex = i * 4 + y; // Calculate the index of the grid item
+            gridItems[gridIndex].style.backgroundColor = player.next_tetromino.matrix[i][y] !== 0 ? player.next_tetromino.color : 'rgba(0, 0, 0, 0)';
+        }
     }
 }
 
-const player = new Player();
-player.getRandomTetromino();
+function changeRotate() {
+    if (player.rotateIsAllowed) {
+        player.rotateIsAllowed = false;
+        rotateButton.textContent = "Rotate: Off";
+    }
+    else { player.rotateIsAllowed = true; rotateButton.textContent = "Rotate: On"; }
+}
+
+function changeTheme() {
+    if (player.isDarkMode) {
+        r.style.setProperty('--background-color', 'white');
+        r.style.setProperty('--content-background-color', 'white');
+        r.style.setProperty('--content-border', 'black');
+        r.style.setProperty('--text-color', 'black');
+        themeModeButton.textContent = "Dark mode";
+        player.isDarkMode = false;
+    }
+    else {
+        r.style.setProperty('--background-color', 'black');
+        r.style.setProperty('--content-background-color', 'black');
+        r.style.setProperty('--content-border', 'white');
+        r.style.setProperty('--text-color', 'white');
+        themeModeButton.textContent = "Light mode";
+        player.isDarkMode = true;
+    }
+}
 
 // Update the speed display
 function updateSpeed() {
@@ -167,7 +203,7 @@ function incrementSpeed() {
 
 // Decrement the speed by one
 function decrementSpeed() {
-    if (speed > 0) {
+    if (speed > speed_min) {
         speed--;
         player.speed--;
         updateSpeed();
@@ -187,6 +223,16 @@ function nextLevel() {
     speedOption.textContent = speed;
 }
 
+function initLevel() {
+    speed_min = 0;
+    speed = 0;
+    player.speed = speed;
+    level = 1;
+    clear_before_next_level = 1;
+    levelElement.textContent = level;
+    speedOption.textContent = speed;
+}
+
 function drawMatrix(matrix, x, y) {
     for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[i].length; j++) {
@@ -196,7 +242,7 @@ function drawMatrix(matrix, x, y) {
 }
 
 function rotateMatrix(matrix, dir) {
-    if (!rotateIsAllowed) return matrix;
+    if (!player.rotateIsAllowed) return matrix;
     let newMatrix = [];
 
     for (let i in matrix) newMatrix.push([]);
@@ -241,8 +287,6 @@ function mergeArena(matrix, x, y) {
     }
 }
 
-const score = document.getElementById("score");
-
 function clearBlocks() {
     for (let i = 1; i < arena.length - 2; i++) {
         let clear = true;
@@ -282,12 +326,9 @@ function drawArena() {
 
 function initArena() {
     isGameOver = false;
-    player.score = 0;
-    score.textContent = player.score;
     player.pos.y = 0;
     player.pos.x = 4;
     player.getRandomTetromino();
-    timerElement.textContent = "0:00";
     arena = [];
 
     const r = new Array(tWidth + 2).fill(1);
@@ -310,13 +351,13 @@ function gameOver() {
     return;
 }
 
-let interval = 1000;
-let lastTime = 0;
-let count = 0;
-let isGameOver = false;
-
 function restart() {
     gameOverElement.style.visibility = "hidden";
+    timerElement.textContent = "0:00";
+    player.score = 0;
+    score.textContent = player.score;
+    timerDuration = 0;
+    initLevel();
     initArena();
     update();
 }
@@ -380,12 +421,6 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-initArena();
-update();
-
-// Définir la durée initiale du timer en secondes
-let timerDuration = 0;
-
 // Définir la fonction qui met à jour le timer
 function updateTimer() {
     if (isGameOver) {
@@ -402,9 +437,3 @@ function updateTimer() {
     // Incrémente le temps
     timerDuration++;
 }
-
-// Appeler la fonction updateTimer une fois pour afficher le temps initial
-updateTimer();
-
-// Mettre à jour le timer toutes les secondes
-const timerInterval = setInterval(updateTimer, 1000);

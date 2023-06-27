@@ -25,7 +25,7 @@
     <!-- Génération des éléments de la grille -->
     <script>
       for (let i = 1; i <= 200; i++) {
-        document.write('<div class="item' + i + '"></div>');
+        document.write('<div class="item"></div>');
       }
     </script>
   </div>
@@ -33,6 +33,14 @@
   <div class="next-block">
     <h6>Next</h6>
     <div class="next-block-content"></div>
+    <div class="grid-next-container">
+      <!-- Génération des éléments de la grille -->
+      <script>
+        for (let i = 1; i <= 16; i++) {
+          document.write('<div id="item' + i + '"></div>');
+        }
+      </script>
+    </div>
   </div>
 
   <div class="options">
@@ -54,7 +62,7 @@
     <div class="info-level">
       <h6>Level</h6>
       <div class="info-level-content">
-        <p id="level">0</p>
+        <p id="level">1</p>
       </div>
     </div>
     <div class="info-level">
