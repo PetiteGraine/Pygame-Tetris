@@ -1,8 +1,13 @@
 const speedOption = document.getElementById('speed-option');
+const restartButton = document.getElementById('restart');
 const triangleLeft = document.querySelector('.triangle-left');
 const triangleRight = document.querySelector('.triangle-right');
+// Sélectionner l'élément DOM du timer
+const timerElement = document.getElementById('time');
 let speed = 0;
 
+
+restartButton.addEventListener("click", restart);
 // Add event listener for the right triangle
 triangleRight.addEventListener('click', incrementSpeed);
 
@@ -217,6 +222,13 @@ function drawArena() {
 }
 
 function initArena() {
+    isGameOver = false;
+    player.score = 0;
+    score.textContent = player.score;
+    player.pos.y = 0;
+    player.pos.x = 4;
+    player.getRandomTetromino();
+    timerElement.textContent = "0:00";
     arena = [];
 
     const r = new Array(tWidth + 2).fill(1);
@@ -236,7 +248,6 @@ function initArena() {
 
 function gameOver() {
     for (let j = 1; j < arena[1].length - 1; j++) if (arena[1][j]) isGameOver = true;
-
     return;
 }
 
@@ -245,8 +256,15 @@ let lastTime = 0;
 let count = 0;
 let isGameOver = false;
 
+function restart() {
+    initArena();
+    update();
+}
+
 function update(time = 0) {
-    if (isGameOver) return;
+    if (isGameOver) {
+        return;
+    }
     const dt = time - lastTime;
     lastTime = time;
     count += dt;
@@ -305,9 +323,6 @@ document.addEventListener("keydown", (event) => {
 initArena();
 update();
 
-// Sélectionner l'élément DOM du timer
-const timerElement = document.getElementById('time');
-
 // Définir la durée initiale du timer en secondes
 let timerDuration = 0;
 
@@ -326,7 +341,6 @@ function updateTimer() {
 
     // Incrémente le temps
     timerDuration++;
-
 }
 
 // Appeler la fonction updateTimer une fois pour afficher le temps initial
