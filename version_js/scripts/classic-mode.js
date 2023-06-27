@@ -1,5 +1,6 @@
 const speedOption = document.getElementById('speed-option');
 const themeModeButton = document.getElementById('theme-mode');
+const levelElement = document.getElementById('level');
 const rotateButton = document.getElementById('rotate-option');
 const gameOverElement = document.getElementById('game-over');
 const restartButton = document.getElementById('restart');
@@ -11,6 +12,9 @@ let isDarkMode = true;
 // Sélectionner l'élément DOM du timer
 const timerElement = document.getElementById('time');
 let speed = 0;
+let speed_min = 0;
+let level = 1;
+let clear_before_next_level = 1;
 
 function changeRotate() {
     if (rotateIsAllowed) {
@@ -170,6 +174,19 @@ function decrementSpeed() {
     }
 }
 
+function verifySpeedMinimum() {
+    if (speed < speed_min)
+        speed = speed_min;
+}
+
+function nextLevel() {
+    level++;
+    speed_min++;
+    verifySpeedMinimum();
+    levelElement.textContent = level;
+    speedOption.textContent = speed;
+}
+
 function drawMatrix(matrix, x, y) {
     for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[i].length; j++) {
@@ -242,6 +259,11 @@ function clearBlocks() {
             arena.splice(i, 1);
             arena.splice(1, 0, r);
             player.score += 11;
+            clear_before_next_level--;
+            if (clear_before_next_level == 0 && level < 11) {
+                nextLevel();
+                clear_before_next_level = 1;
+            }
             score.textContent = player.score;
         }
     }
