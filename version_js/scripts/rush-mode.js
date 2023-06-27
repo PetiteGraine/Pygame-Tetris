@@ -199,7 +199,7 @@ function clearBlocks() {
 
             arena.splice(i, 1);
             arena.splice(1, 0, r);
-            player.score++;
+            player.score += 11;
             score.textContent = player.score;
         }
     }
@@ -265,6 +265,8 @@ function update(time = 0) {
         player.pos.x = 4;
 
         player.getRandomTetromino();
+        player.score += 2;
+        score.textContent = player.score;
 
         if (player.speed < 10) {
             interval = 1000 - (player.speed * 100);

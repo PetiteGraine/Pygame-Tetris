@@ -132,7 +132,7 @@ function decrementSpeed() {
 function drawMatrix(matrix, x, y) {
     for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[i].length; j++) {
-            if (matrix[i][j]) ctx.fillRect(x + j, y + i, 1, 1);
+            if (matrix[i][j]) { ctx.fillRect(x + j, y + i, 1, 1); };
         }
     }
 }
@@ -199,7 +199,7 @@ function clearBlocks() {
 
             arena.splice(i, 1);
             arena.splice(1, 0, r);
-            player.score++;
+            player.score += 11;
             score.textContent = player.score;
         }
     }
@@ -263,9 +263,9 @@ function update(time = 0) {
 
         player.pos.y = 0;
         player.pos.x = 4;
-
         player.getRandomTetromino();
-
+        player.score += 2;
+        score.textContent = player.score;
         if (player.speed < 10) {
             interval = 1000 - (player.speed * 100);
         }
@@ -276,7 +276,6 @@ function update(time = 0) {
 
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     drawArena();
     ctx.fillStyle = player.tetromino.color;
     drawMatrix(player.tetromino.matrix, player.pos.x, player.pos.y);
