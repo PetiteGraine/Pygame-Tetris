@@ -211,8 +211,10 @@ function decrementSpeed() {
 }
 
 function verifySpeedMinimum() {
-    if (speed < speed_min)
+    if (speed < speed_min) {
         speed = speed_min;
+        player.speed = speed;
+    }
 }
 
 function nextLevel() {
